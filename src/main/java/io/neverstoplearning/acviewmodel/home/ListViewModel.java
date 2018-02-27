@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.neverstoplearning.acviewmodel.model.Repo;
 import io.neverstoplearning.acviewmodel.networking.RepoApi;
 import retrofit2.Call;
@@ -21,6 +23,7 @@ public class ListViewModel extends ViewModel {
 
     private Call<List<Repo>> repoCall;
 
+    @Inject
     public ListViewModel() {
         fetchRepos();
     }

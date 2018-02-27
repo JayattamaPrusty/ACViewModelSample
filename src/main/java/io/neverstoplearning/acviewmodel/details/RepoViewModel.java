@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 
 
+import javax.inject.Inject;
+
 import io.neverstoplearning.acviewmodel.model.Repo;
 import io.neverstoplearning.acviewmodel.networking.RepoApi;
 import retrofit2.Call;
@@ -20,6 +22,11 @@ public class RepoViewModel extends ViewModel {
 
     private MutableLiveData<Repo> selectedRepo = new MutableLiveData<>();
     private Call<Repo> repoCall;
+
+    @Inject
+    RepoViewModel(){
+
+    }
 
     public LiveData<Repo> getSelectedRepo() {
         return selectedRepo;
