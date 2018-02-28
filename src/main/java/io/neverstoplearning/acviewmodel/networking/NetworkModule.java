@@ -14,6 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 /**
  * Created by mulasa.arunkumar on 27-02-2018.
  */
+
 @Module
 public abstract class NetworkModule {
     private static final String BASE_URL = "https://api.github.com/";

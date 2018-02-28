@@ -16,6 +16,11 @@ import butterknife.ButterKnife;
 import io.neverstoplearning.acviewmodel.R;
 import io.neverstoplearning.acviewmodel.model.Repo;
 
+
+/**
+ * Created by mulasa.arunkumar on 27-02-2018.
+ */
+
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoViewHolder> {
 
     private final List<Repo> data = new ArrayList<>();

@@ -4,6 +4,12 @@ import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+
+/**
+ * Created by mulasa.arunkumar on 27-02-2018.
+ */
+
+
 @AutoValue
 public abstract class User {
 
