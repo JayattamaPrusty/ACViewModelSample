@@ -10,7 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.neverstoplearning.acviewmodel.model.Repo;
-import io.neverstoplearning.acviewmodel.networking.RepoApi;
+import io.neverstoplearning.acviewmodel.networking.RepoService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,9 +22,11 @@ public class ListViewModel extends ViewModel {
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     private Call<List<Repo>> repoCall;
+    private RepoService repoService;
 
     @Inject
-    public ListViewModel() {
+    public ListViewModel(RepoService repoService) {
+        this.repoService = repoService;
         fetchRepos();
     }
 
@@ -42,7 +44,7 @@ public class ListViewModel extends ViewModel {
 
     private void fetchRepos() {
         loading.setValue(true);
-        repoCall = RepoApi.getInstance().getRepositories();
+        repoCall = repoService.getRepositories();
         repoCall.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {

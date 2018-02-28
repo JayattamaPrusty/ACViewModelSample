@@ -1,6 +1,7 @@
 package io.neverstoplearning.acviewmodel.home;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,15 +14,21 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.neverstoplearning.acviewmodel.R;
+import io.neverstoplearning.acviewmodel.base.BaseApplication;
 import io.neverstoplearning.acviewmodel.details.ListDetailsFragment;
 import io.neverstoplearning.acviewmodel.details.RepoViewModel;
 import io.neverstoplearning.acviewmodel.model.Repo;
+import io.neverstoplearning.acviewmodel.viewmodels.ViewModelFactory;
 
 public class ListFragment extends Fragment implements RepoSelectedListener {
+
+    @Inject ViewModelFactory viewModelFactory;
 
     @BindView(R.id.recycler_view) RecyclerView listView;
     @BindView(R.id.tv_error) TextView errorTextView;
@@ -31,8 +38,14 @@ public class ListFragment extends Fragment implements RepoSelectedListener {
     private ListViewModel viewModel;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        BaseApplication.getApplicationComponent(context).inject(this);
+    }
+
+    @Override
     public void onRepoSelected(Repo repo) {
-        RepoViewModel repoViewModel = ViewModelProviders.of(getActivity())
+        RepoViewModel repoViewModel = ViewModelProviders.of(getActivity(),viewModelFactory)
                 .get(RepoViewModel.class);
         repoViewModel.setSelectedRepo(repo);
 
@@ -54,7 +67,7 @@ public class ListFragment extends Fragment implements RepoSelectedListener {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
+        viewModel = ViewModelProviders.of(this,viewModelFactory).get(ListViewModel.class);
 
         listView.addItemDecoration(new DividerItemDecoration(getContext()
                 , DividerItemDecoration.VERTICAL));

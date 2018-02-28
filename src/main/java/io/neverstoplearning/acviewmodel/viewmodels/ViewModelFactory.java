@@ -11,8 +11,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import dagger.Provides;
-import io.neverstoplearning.acviewmodel.home.ListViewModel;
 
 /**
  * Created by mulasa.arunkumar on 27-02-2018.

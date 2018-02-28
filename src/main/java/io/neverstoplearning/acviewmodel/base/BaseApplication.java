@@ -17,7 +17,7 @@ public class BaseApplication extends Application {
         component = DaggerApplicationComponent.create();
     }
 
-    public static ApplicationComponent getApplicationContext(Context context){
+    public static ApplicationComponent getApplicationComponent(Context context){
         return ((BaseApplication) context.getApplicationContext()).component;
     }
 }

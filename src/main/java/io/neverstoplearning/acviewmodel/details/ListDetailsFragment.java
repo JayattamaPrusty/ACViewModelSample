@@ -1,6 +1,7 @@
 package io.neverstoplearning.acviewmodel.details;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.neverstoplearning.acviewmodel.R;
+import io.neverstoplearning.acviewmodel.base.BaseApplication;
+import io.neverstoplearning.acviewmodel.viewmodels.ViewModelFactory;
 
 
 /**
@@ -20,6 +25,9 @@ import io.neverstoplearning.acviewmodel.R;
  */
 
 public class ListDetailsFragment extends Fragment {
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @BindView(R.id.tv_reponame)
     TextView repoName;
@@ -30,21 +38,27 @@ public class ListDetailsFragment extends Fragment {
     @BindView(R.id.tv_forks)
     TextView forks;
 
-     private Unbinder unbinder;
+    private Unbinder unbinder;
     private RepoViewModel repoViewModel;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        BaseApplication.getApplicationComponent(context).inject(this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.details_frag, container, false);
-        unbinder = ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        repoViewModel = ViewModelProviders.of(getActivity()).get(RepoViewModel.class);
+        repoViewModel = ViewModelProviders.of(getActivity(),viewModelFactory).get(RepoViewModel.class);
         // In case of process got destroyed
         repoViewModel.restoreFromBundle(savedInstanceState);
         displaySelectedRepo();
@@ -58,7 +72,7 @@ public class ListDetailsFragment extends Fragment {
 
     private void displaySelectedRepo() {
         repoViewModel.getSelectedRepo().observe(this, repo -> {
-            if(repo != null){
+            if (repo != null) {
                 repoName.setText(repo.name);
                 repoDesc.setText(repo.description);
                 starCount.setText(String.valueOf(repo.stars));
@@ -70,7 +84,7 @@ public class ListDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(unbinder != null){
+        if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
         }

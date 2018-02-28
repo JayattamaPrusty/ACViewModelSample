@@ -9,7 +9,7 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import io.neverstoplearning.acviewmodel.model.Repo;
-import io.neverstoplearning.acviewmodel.networking.RepoApi;
+import io.neverstoplearning.acviewmodel.networking.RepoService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,10 +22,11 @@ public class RepoViewModel extends ViewModel {
 
     private MutableLiveData<Repo> selectedRepo = new MutableLiveData<>();
     private Call<Repo> repoCall;
+    private RepoService repoService;
 
     @Inject
-    RepoViewModel(){
-
+    RepoViewModel(RepoService repoService) {
+        this.repoService = repoService;
     }
 
     public LiveData<Repo> getSelectedRepo() {
@@ -40,13 +41,13 @@ public class RepoViewModel extends ViewModel {
         if (selectedRepo.getValue() == null) {
             // If We dont have Repo
             if (savedInstanceState != null && savedInstanceState.containsKey("repo_details")) {
-               loadRepo(savedInstanceState.getStringArray("repo_details"));
+                loadRepo(savedInstanceState.getStringArray("repo_details"));
             }
         }
     }
 
     private void loadRepo(String[] repoDetails) {
-        repoCall = RepoApi.getInstance().getRepoDetails(repoDetails[0],repoDetails[1]);
+        repoCall = repoService.getRepoDetails(repoDetails[0], repoDetails[1]);
         repoCall.enqueue(new Callback<Repo>() {
             @Override
             public void onResponse(Call<Repo> call, Response<Repo> response) {
@@ -73,7 +74,7 @@ public class RepoViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        if(repoCall != null){
+        if (repoCall != null) {
             repoCall.cancel();
             repoCall = null;
         }

@@ -3,6 +3,8 @@ package io.neverstoplearning.acviewmodel.base;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.neverstoplearning.acviewmodel.details.ListDetailsFragment;
+import io.neverstoplearning.acviewmodel.home.ListFragment;
 import io.neverstoplearning.acviewmodel.networking.NetworkModule;
 import io.neverstoplearning.acviewmodel.viewmodels.ViewModelModule;
 
@@ -16,4 +18,8 @@ import io.neverstoplearning.acviewmodel.viewmodels.ViewModelModule;
         ViewModelModule.class
 })
 public interface ApplicationComponent {
+
+    void inject(ListFragment listFragment);
+
+    void inject(ListDetailsFragment listDetailsFragment);
 }
