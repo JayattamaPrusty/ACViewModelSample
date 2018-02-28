@@ -1,9 +1,13 @@
 package io.neverstoplearning.acviewmodel.networking;
 
+import com.ryanharter.auto.value.moshi.MoshiAdapterFactory;
+import com.squareup.moshi.Moshi;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.neverstoplearning.acviewmodel.model.ModelAdapterFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -16,10 +20,18 @@ public abstract class NetworkModule {
 
     @Provides
     @Singleton
-    static Retrofit provideRetrofit() {
+    static Moshi providesMoshi(){
+        return new Moshi.Builder()
+                .add(ModelAdapterFactory.create())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    static Retrofit provideRetrofit(Moshi moshi) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
     }
 

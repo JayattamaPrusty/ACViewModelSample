@@ -73,10 +73,10 @@ public class ListDetailsFragment extends Fragment {
     private void displaySelectedRepo() {
         repoViewModel.getSelectedRepo().observe(this, repo -> {
             if (repo != null) {
-                repoName.setText(repo.name);
-                repoDesc.setText(repo.description);
-                starCount.setText(String.valueOf(repo.stars));
-                forks.setText(String.valueOf(repo.forks));
+                repoName.setText(repo.name());
+                repoDesc.setText(repo.description());
+                starCount.setText(String.valueOf(repo.stars()));
+                forks.setText(String.valueOf(repo.forks()));
             }
         });
     }
